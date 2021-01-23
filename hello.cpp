@@ -7,7 +7,7 @@ class Student {
 		int id;
 	public:
 		Student();
-		Student& operator=(const Student&) = delete;
+		Student& operator=(const Student&) = delete; //disable copy function
 		virtual void print_info();
 };
 
@@ -26,6 +26,11 @@ class Uni_student : public Student{
 	public:
 		Uni_student();
 		virtual void print_info();
+		~Uni_student();//destructor
+		Uni_student(Uni_student&& rhs);//move constructor
+		Uni_student& operator=(Uni_student&& rhs);//move assignment operator
+		Uni_student(const Uni_student&) = default;//copy constructor
+		Uni_student& operator=(const Uni_student&) = default;//copy assign
 };
 
 Uni_student::Uni_student(){
@@ -40,12 +45,15 @@ int &b = a;
 auto c = b;
 decltype(auto)d = b;
 std::unordered_map<std::string, int> m;
+
+//Template
 template<typename T>
 inline T const& Max (T const& a, T const& b) noexcept 
 {
 	return a > b ? a : b;
 }
 
+//enum class
 enum class Colour {red, green};
 
 int main() {
@@ -53,8 +61,10 @@ int main() {
 	Student *ptr_s {nullptr};
 	ptr_s = &tom;
 	std::unique_ptr<Student> base_s = std::make_unique<Uni_student>();
-	base_s->print_info();
-	base_s->Student::print_info();
+
+	base_s->print_info();//Child class print
+	base_s->Student::print_info();//Base class print
+
 	a = { 5 };
 	b = { 3 };
 	std::swap(a,b);
