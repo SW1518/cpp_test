@@ -57,6 +57,10 @@ inline T const& Max (T const& a, T const& b) noexcept
 enum class Colour {red, green};
 
 int main() {
+	uint32_t temp {0xABCD};
+	uint32_t *p {nullptr};
+	p = &temp;
+	std::cout<<"The value of temp:"<<*p<<std::endl;
 	Student tom;
 	Student *ptr_s {nullptr};
 	ptr_s = &tom;

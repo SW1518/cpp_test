@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <math.h>
  
  
 static uint32_t table[256];
@@ -21,6 +22,22 @@ static uint32_t bitrev(uint32_t input, int bw)
         input >>= 1;
     }
     return var;
+}
+
+uint32_t val_setup(uint32_t *in)
+{
+    uint32_t res = 0;
+    uint8_t *temp;
+
+    temp = (uint8_t *) in + 3;
+    for (int i = 0; i < 4; i++)
+    {
+        res += *temp;
+        res <<= 8;
+        temp++;
+    }
+    bitrev(res,32);
+    return res;
 }
  
  
@@ -81,10 +98,18 @@ uint32_t crc32(uint32_t crc, uint32_t *input, int len)
 int main()
 {
     uint32_t crc;
-    uint32_t in = 0x0;
+    uint32_t in = 0x1;
+    uint32_t test = 0xdebb20e3;
+    //const int32_t theta = 10000;
+    //float a = sinf(3.0f/acos(-1));
+    //int32_t res = sinf((float)theta/(pow(2,32))*2*acos(-1))* pow(2,32);
+    //float fres = sinf((float)theta/(powf(2,32))*2*acos(-1))* powf(2,32);
     crc32_init(0x04C11DB7);
-    crc = crc32(0xFFFFFFFF, &in, 4);
-    printf("reversed num = 0x%08X\n", bitrev(0x04C11DB7,32));
-    printf("CRC32 = 0x%08X\n", crc ^ 0xFFFFFFFF);
+    crc = crc32(bitrev(0xc704dd7b,32), &in, 4);
+    uint32_t res = val_setup(&test);
+    //printf("initi setup val is: 0x%08X\n", val_setup(&test));
+    printf("reversed num = 0x%08X\n", bitrev(0xdebb20e3,32));
+    printf("reversed num = 0x%08X\n", bitrev(0xe3,8));
+    printf("CRC32 = 0x%08X\n", crc ^ 0x00000000);
     system("pause");
 }
