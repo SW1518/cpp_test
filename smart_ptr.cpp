@@ -1,9 +1,21 @@
 #include <stdio.h>
 #include <iostream>
+#include <string>
 #include <memory>
 
-class Investment {};
-class Stock      : public Investment {};
+class Investment {
+    const std::string ID = "investment";
+    public:
+        void getID();
+};
+
+void Investment::getID()
+{
+    std::cout<<ID<<std::endl;
+}
+class Stock      : public Investment {
+    const std::string ID = "stock";
+};
 class Bond       : public Investment {};
 class RealEstate : public Investment {};
 
@@ -19,7 +31,10 @@ int main (int argc,char * argv[])
                         {
                             makeLogEntry(pInvestment);
                             delete pInvestment;
-                        };
+                        };//custom deleter
+    
     std::unique_ptr<Investment, decltype(delInvmt)> pInv (nullptr, delInvmt);
+    std::shared_ptr<Investment> pShar(new Stock, delInvmt);
+    pShar->getID();
     return 0;
 }
