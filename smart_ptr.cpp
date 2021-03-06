@@ -36,5 +36,10 @@ int main (int argc,char * argv[])
     std::unique_ptr<Investment, decltype(delInvmt)> pInv (nullptr, delInvmt);
     std::shared_ptr<Investment> pShar(new Stock, delInvmt);
     pShar->getID();
+    auto spw = std::make_shared<Investment>();
+    std::weak_ptr<Investment> wpw(spw);
+    //auto temp = *wpw; ** No deference for weak pointer **
+    auto stemp = *spw;
+    system("pause");
     return 0;
 }
