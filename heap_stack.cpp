@@ -10,8 +10,8 @@ main()
     const char *p = a;
     std::cout<<*p+1<<std::endl;
     int num {100};
-    int *pInt;
-    pInt = reinterpret_cast<int*>(0x0000FFFF);
+    int addr {200};
+    int *pInt = reinterpret_cast<int*>(&addr);
     *pInt = num;
     int b; //栈
     char s[] = "abc"; //栈
