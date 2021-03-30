@@ -5,6 +5,7 @@
 #include <chrono>
 #include <vector>
 #include <map>
+#include <type_traits>
 
 class Widget{
     public:
@@ -20,7 +21,12 @@ class Widget{
 
 class Person {
     public:
-        template<typename T>
+        template<typename T, typename = typename std::enable_if<
+                                        !std::is_same<Person,                      //
+                                                      typename std::decay<T>::type // Constraint: Only call perfect fordwarding constr
+                                                      >::value                     //  when type != Person
+                                        >::type
+        >
         explicit Person(T&& n) : name(std::forward<T>(n)) {}
         explicit Person(int idx) : name(nameFromIdx(idx)) {} //Perfect forwarding
         std::string nameFromIdx(int idx);
@@ -37,6 +43,9 @@ void logAndAdd(T&& name)
     //log(now, "logAndAdd");
     names.emplace(std::forward<T>(name));
 }
+
+// Avoid universal ref overloading
+
 
 int main(int argc, char * argv[]){
     Widget && var1 = Widget(); // rvalue reference
