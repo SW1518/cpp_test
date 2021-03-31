@@ -22,12 +22,23 @@ class Widget{
 class Person {
     public:
         template<typename T, typename = typename std::enable_if<
-                                        !std::is_same<Person,                      //
-                                                      typename std::decay<T>::type // Constraint: Only call perfect fordwarding constr
-                                                      >::value                     //  when type != Person
+                                        !std::is_base_of<Person, typename std::decay<T>::type>::value // Constraint: Only call perfect fordwarding constr when type!=Person
+                                        &&
+                                        !std::is_integral<std::remove_reference<T>::type>::value // Distinguish integral/non-integral arguments
                                         >::type
         >
-        explicit Person(T&& n) : name(std::forward<T>(n)) {}
+        // Less code in C14
+        // template<typename T, typename = typename std::enable_if_t<
+        //                                 !std::is_base_of<Person,
+        //                                                 typename std::decay_t<T>
+        //                                                 >::value
+        //                                 >
+        // >
+        explicit Person(T&& n) : name(std::forward<T>(n)) {
+            // assertion
+            static_assert(std::is_constructible<std::string, T>::value,
+            "Parameter n can't be used to construct a std::string");
+        }
         explicit Person(int idx) : name(nameFromIdx(idx)) {} //Perfect forwarding
         std::string nameFromIdx(int idx);
     private:
