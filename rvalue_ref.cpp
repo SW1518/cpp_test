@@ -24,8 +24,8 @@ class Person {
         template<typename T, typename = typename std::enable_if<
                                         !std::is_base_of<Person, typename std::decay<T>::type>::value // Constraint: Only call perfect fordwarding constr when type!=Person
                                         &&
-                                        !std::is_integral<std::remove_reference<T>::type>::value // Distinguish integral/non-integral arguments
-                                        >::type
+                                        !std::is_integral<std::remove_reference_t<T>>::value // Distinguish integral/non-integral arguments
+                                        >
         >
         // Less code in C14
         // template<typename T, typename = typename std::enable_if_t<
