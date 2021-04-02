@@ -16,5 +16,5 @@ array_ptr.o: array_ptr.cpp
 .PHONY: clean
 clean:
 	@echo "Clean output and log"
-	@rm -f hello heap_stack *.o
+	@rm -f hello array_ptr crc32 rgb16 heap_stack *.o
 	@rm -rf *.dSYM
