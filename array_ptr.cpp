@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
     std::cout<<*(*(p+1))<<std::endl;
     std::cout<<*(*p+1)<<std::endl;
 
-    const char* str[] ={"hello","world"};
+    const char* str[] = {"hello","world"};
     const char str1[] = {"hello"};
     const char **pchar {nullptr};
     pchar = str;
